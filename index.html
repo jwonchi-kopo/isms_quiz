@@ -4,6 +4,37 @@
     <title>ISMS Quiz</title>
   </head>
   <body>
-    ISMS Quiz 입니다.
+    <table id="csv-data"></table>
+    <script>
+      // CSV 파일 URL
+      const csvUrl = 'https://raw.githubusercontent.com/jwonchi-kopo/{repository}/{branch}/{path-to-csv}';
+      // CSV 파일을 가져와 데이터 출력
+      fetch(csvUrl)
+        .then(response => response.text())
+        .then(data => {
+          // CSV 데이터 파싱
+          const parsedData = [];
+          const rows = data.split('\n');
+          rows.forEach(row => {
+            const columns = row.split(',');
+            parsedData.push(columns);
+          });
+
+          // 데이터 출력
+          const table = document.getElementById('csv-data');
+          parsedData.forEach(row => {
+            const tr = document.createElement('tr');
+            row.forEach(column => {
+              const td = document.createElement('td');
+              td.textContent = column;
+              tr.appendChild(td);
+            });
+            table.appendChild(tr);
+          });
+        })
+        .catch(error => {
+          console.error('CSV 파일을 가져오는 중 오류가 발생했습니다:', error);
+        });
+    </script>
   </body>
 </html>
